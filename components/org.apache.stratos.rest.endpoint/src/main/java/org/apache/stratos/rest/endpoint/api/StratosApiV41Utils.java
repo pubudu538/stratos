@@ -3150,7 +3150,7 @@ public class StratosApiV41Utils {
                 }
             } else {
                 String msg = "The tenant with domain name: " + tenantDomain + " does not exist.";
-                throw new RestAPIException(msg);
+                throw new InvalidDomainException(msg);
             }
         } catch (UserStoreException e) {
             String msg = "Error in retrieving the tenant id for the tenant domain: " + tenantDomain + ".";
@@ -3189,7 +3189,7 @@ public class StratosApiV41Utils {
                 }
             } else {
                 String msg = "The tenant with domain name: " + tenantDomain + " does not exist.";
-                throw new RestAPIException(msg);
+                throw new InvalidDomainException(msg);
             }
         } catch (UserStoreException e) {
             String msg = "Error in retrieving the tenant id for the tenant domain: " +

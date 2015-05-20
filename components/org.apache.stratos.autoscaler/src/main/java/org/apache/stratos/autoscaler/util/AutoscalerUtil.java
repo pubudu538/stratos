@@ -795,12 +795,6 @@ public class AutoscalerUtil {
                 }
 
 
-//                //Finding the GroupMonitor based on ApplicationMonitor
-//                GroupMonitor groupMonitor = (GroupMonitor) AutoscalerContext.getInstance().
-//                        getAppMonitor(application.getUniqueIdentifier()).
-//                        findGroupMonitorWithId(existingGroup.getUniqueIdentifier());
-
-
                 try {
                     ApplicationHolder.acquireWriteLock();
                     //update the min and max of Group instances

@@ -381,7 +381,7 @@ public class RestCommandLineService {
                     listType, "Cartridge Groups");
 
             if ((cartridgeGroupList == null) || (cartridgeGroupList.size() == 0)) {
-                System.out.println("No cartridges found");
+                System.out.println("No cartridge groups found");
                 return;
             }
 
@@ -446,22 +446,20 @@ public class RestCommandLineService {
             if (cartridge.getIaasProvider() != null) {
                 RowMapper<IaasProviderBean> cartridgeMapper = new RowMapper<IaasProviderBean>() {
                     public String[] getData(IaasProviderBean row) {
-                        String[] data = new String[4];
-                        data[0] = row.getProvider();
-                        data[1] = row.getType();
-                        data[2] = row.getName();
-                        data[3] = row.getImageId();
+                        String[] data = new String[2];
+                        data[0] = row.getType();
+                        data[1] = row.getImageId();
                         return data;
                     }
                 };
 
-                IaasProviderBean[] iaasProviders = new IaasProviderBean[cartridgeList.size()];
+                IaasProviderBean[] iaasProviders = new IaasProviderBean[cartridge.getIaasProvider().size()];
                 iaasProviders = cartridge.getIaasProvider().toArray(iaasProviders);
 
                 System.out.println("-------------------------------------");
                 System.out.println("IaaS Providers: ");
                 System.out.println("-------------------------------------");
-                CliUtils.printTable(iaasProviders, cartridgeMapper, "Provider", "Type", "Name", "Image ID");
+                CliUtils.printTable(iaasProviders, cartridgeMapper, "Type", "Image ID");
             }
             System.out.println("-------------------------------------");
         } catch (Exception e) {
@@ -1527,18 +1525,11 @@ public class RestCommandLineService {
             HttpResponse response = restClient.doPost(httpClient, restClient.getBaseURL()
                     + url, "");
 
-            String responseCode = "" + response.getStatusLine().getStatusCode();
+            String result = getHttpResponseString(response);
 
             GsonBuilder gsonBuilder = new GsonBuilder();
             Gson gson = gsonBuilder.create();
-
-            if (Integer.parseInt(responseCode) < 300 && Integer.parseInt(responseCode) >= 200) {
-                System.out.println("You have successfully deployed application: " + applicationId);
-            } else {
-                String resultString = CliUtils.getHttpResponseString(response);
-                ExceptionMapper exception = gson.fromJson(resultString, ExceptionMapper.class);
-                System.out.println(exception);
-            }
+            System.out.println(gson.fromJson(result, ResponseMessageBean.class).getMessage());
 
         } catch (Exception e) {
             String message = "Could not deploy application: " + applicationId;
@@ -1561,20 +1552,11 @@ public class RestCommandLineService {
         try {
             HttpResponse response = restClient.doPost(httpClient, restClient.getBaseURL()
                     + ENDPOINT_UNDEPLOY_APPLICATION.replace("{id}", applicationId), "");
-
-            String responseCode = "" + response.getStatusLine().getStatusCode();
+            String result = getHttpResponseString(response);
 
             GsonBuilder gsonBuilder = new GsonBuilder();
             Gson gson = gsonBuilder.create();
-
-            if (Integer.parseInt(responseCode) < 300 && Integer.parseInt(responseCode) >= 200) {
-                System.out.println("You have successfully undeployed application: " + applicationId);
-            } else {
-                String resultString = CliUtils.getHttpResponseString(response);
-                ExceptionMapper exception = gson.fromJson(resultString, ExceptionMapper.class);
-                System.out.println(exception);
-            }
-
+            System.out.println(gson.fromJson(result, ResponseMessageBean.class).getMessage());
         } catch (Exception e) {
             String message = "Could not undeploy application: " + applicationId;
             printError(message, e);

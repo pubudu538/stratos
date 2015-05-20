@@ -324,6 +324,20 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="AutoscalerServiceCartridgeGroupNotFoundException">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="CartridgeGroupNotFoundException" nillable="true" type="ax210:CartridgeGroupNotFoundException"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AutoscalerServiceCartridgeNotFoundException">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="CartridgeNotFoundException" nillable="true" type="ax210:CartridgeNotFoundException"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
             <xs:element name="addApplication">
                 <xs:complexType>
                     <xs:sequence>
@@ -560,13 +574,6 @@
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element minOccurs="0" name="return" type="xs:boolean"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="AutoscalerServiceCartridgeGroupNotFoundException">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="CartridgeGroupNotFoundException" nillable="true" type="ax210:CartridgeGroupNotFoundException"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -867,13 +874,20 @@
                     </xs:extension>
                 </xs:complexContent>
             </xs:complexType>
-            <xs:complexType name="InvalidArgumentException">
+            <xs:complexType name="CartridgeGroupNotFoundException">
                 <xs:sequence>
                     <xs:element minOccurs="0" name="message" nillable="true" type="xs:string"/>
                 </xs:sequence>
             </xs:complexType>
-            <xs:complexType name="CartridgeGroupNotFoundException">
-                <xs:sequence/>
+            <xs:complexType name="CartridgeNotFoundException">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="message" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="InvalidArgumentException">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="message" nillable="true" type="xs:string"/>
+                </xs:sequence>
             </xs:complexType>
             <xs:complexType name="CloudControllerConnectionException">
                 <xs:sequence/>
@@ -1084,6 +1098,12 @@
     <wsdl:message name="addApplicationResponse">
         <wsdl:part name="parameters" element="ns:addApplicationResponse"/>
     </wsdl:message>
+    <wsdl:message name="AutoscalerServiceCartridgeGroupNotFoundException">
+        <wsdl:part name="parameters" element="ns:AutoscalerServiceCartridgeGroupNotFoundException"/>
+    </wsdl:message>
+    <wsdl:message name="AutoscalerServiceCartridgeNotFoundException">
+        <wsdl:part name="parameters" element="ns:AutoscalerServiceCartridgeNotFoundException"/>
+    </wsdl:message>
     <wsdl:message name="updateClusterMonitorRequest">
         <wsdl:part name="parameters" element="ns:updateClusterMonitor"/>
     </wsdl:message>
@@ -1113,9 +1133,6 @@
     </wsdl:message>
     <wsdl:message name="removeServiceGroupResponse">
         <wsdl:part name="parameters" element="ns:removeServiceGroupResponse"/>
-    </wsdl:message>
-    <wsdl:message name="AutoscalerServiceCartridgeGroupNotFoundException">
-        <wsdl:part name="parameters" element="ns:AutoscalerServiceCartridgeGroupNotFoundException"/>
     </wsdl:message>
     <wsdl:message name="getApplicationPolicyRequest">
         <wsdl:part name="parameters" element="ns:getApplicationPolicy"/>
@@ -1261,6 +1278,8 @@
             <wsdl:input message="ns:addApplicationRequest" wsaw:Action="urn:addApplication"/>
             <wsdl:output message="ns:addApplicationResponse" wsaw:Action="urn:addApplicationResponse"/>
             <wsdl:fault message="ns:AutoscalerServiceApplicationDefinitionException" name="AutoscalerServiceApplicationDefinitionException" wsaw:Action="urn:addApplicationAutoscalerServiceApplicationDefinitionException"/>
+            <wsdl:fault message="ns:AutoscalerServiceCartridgeGroupNotFoundException" name="AutoscalerServiceCartridgeGroupNotFoundException" wsaw:Action="urn:addApplicationAutoscalerServiceCartridgeGroupNotFoundException"/>
+            <wsdl:fault message="ns:AutoscalerServiceCartridgeNotFoundException" name="AutoscalerServiceCartridgeNotFoundException" wsaw:Action="urn:addApplicationAutoscalerServiceCartridgeNotFoundException"/>
         </wsdl:operation>
         <wsdl:operation name="updateClusterMonitor">
             <wsdl:input message="ns:updateClusterMonitorRequest" wsaw:Action="urn:updateClusterMonitor"/>
@@ -1293,6 +1312,8 @@
             <wsdl:input message="ns:updateApplicationRequest" wsaw:Action="urn:updateApplication"/>
             <wsdl:output message="ns:updateApplicationResponse" wsaw:Action="urn:updateApplicationResponse"/>
             <wsdl:fault message="ns:AutoscalerServiceApplicationDefinitionException" name="AutoscalerServiceApplicationDefinitionException" wsaw:Action="urn:updateApplicationAutoscalerServiceApplicationDefinitionException"/>
+            <wsdl:fault message="ns:AutoscalerServiceCartridgeGroupNotFoundException" name="AutoscalerServiceCartridgeGroupNotFoundException" wsaw:Action="urn:updateApplicationAutoscalerServiceCartridgeGroupNotFoundException"/>
+            <wsdl:fault message="ns:AutoscalerServiceCartridgeNotFoundException" name="AutoscalerServiceCartridgeNotFoundException" wsaw:Action="urn:updateApplicationAutoscalerServiceCartridgeNotFoundException"/>
         </wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="AutoscalerServiceSoap11Binding" type="ns:AutoscalerServicePortType">
@@ -1608,8 +1629,14 @@
             <wsdl:output>
                 <soap:body use="literal"/>
             </wsdl:output>
+            <wsdl:fault name="AutoscalerServiceCartridgeNotFoundException">
+                <soap:fault use="literal" name="AutoscalerServiceCartridgeNotFoundException"/>
+            </wsdl:fault>
             <wsdl:fault name="AutoscalerServiceApplicationDefinitionException">
                 <soap:fault use="literal" name="AutoscalerServiceApplicationDefinitionException"/>
+            </wsdl:fault>
+            <wsdl:fault name="AutoscalerServiceCartridgeGroupNotFoundException">
+                <soap:fault use="literal" name="AutoscalerServiceCartridgeGroupNotFoundException"/>
             </wsdl:fault>
         </wsdl:operation>
         <wsdl:operation name="updateClusterMonitor">
@@ -1677,8 +1704,14 @@
             <wsdl:output>
                 <soap:body use="literal"/>
             </wsdl:output>
+            <wsdl:fault name="AutoscalerServiceCartridgeNotFoundException">
+                <soap:fault use="literal" name="AutoscalerServiceCartridgeNotFoundException"/>
+            </wsdl:fault>
             <wsdl:fault name="AutoscalerServiceApplicationDefinitionException">
                 <soap:fault use="literal" name="AutoscalerServiceApplicationDefinitionException"/>
+            </wsdl:fault>
+            <wsdl:fault name="AutoscalerServiceCartridgeGroupNotFoundException">
+                <soap:fault use="literal" name="AutoscalerServiceCartridgeGroupNotFoundException"/>
             </wsdl:fault>
         </wsdl:operation>
         <wsdl:operation name="getApplicationPolicy">
@@ -2004,8 +2037,14 @@
             <wsdl:output>
                 <soap12:body use="literal"/>
             </wsdl:output>
+            <wsdl:fault name="AutoscalerServiceCartridgeNotFoundException">
+                <soap12:fault use="literal" name="AutoscalerServiceCartridgeNotFoundException"/>
+            </wsdl:fault>
             <wsdl:fault name="AutoscalerServiceApplicationDefinitionException">
                 <soap12:fault use="literal" name="AutoscalerServiceApplicationDefinitionException"/>
+            </wsdl:fault>
+            <wsdl:fault name="AutoscalerServiceCartridgeGroupNotFoundException">
+                <soap12:fault use="literal" name="AutoscalerServiceCartridgeGroupNotFoundException"/>
             </wsdl:fault>
         </wsdl:operation>
         <wsdl:operation name="updateClusterMonitor">
@@ -2073,8 +2112,14 @@
             <wsdl:output>
                 <soap12:body use="literal"/>
             </wsdl:output>
+            <wsdl:fault name="AutoscalerServiceCartridgeNotFoundException">
+                <soap12:fault use="literal" name="AutoscalerServiceCartridgeNotFoundException"/>
+            </wsdl:fault>
             <wsdl:fault name="AutoscalerServiceApplicationDefinitionException">
                 <soap12:fault use="literal" name="AutoscalerServiceApplicationDefinitionException"/>
+            </wsdl:fault>
+            <wsdl:fault name="AutoscalerServiceCartridgeGroupNotFoundException">
+                <soap12:fault use="literal" name="AutoscalerServiceCartridgeGroupNotFoundException"/>
             </wsdl:fault>
         </wsdl:operation>
         <wsdl:operation name="getApplicationPolicy">

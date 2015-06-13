@@ -267,4 +267,8 @@ public class CloudControllerServiceClient {
     public void removeExpiredObsoledMemberFromCloudController(MemberContext member) throws RemoteException {
         stub.removeExpiredObsoledMemberFromCloudController(member);
     }
+
+    public IaasProvider[] getIaasProviders() throws RemoteException {
+        return stub.getIaasProviders();
+    }
 }

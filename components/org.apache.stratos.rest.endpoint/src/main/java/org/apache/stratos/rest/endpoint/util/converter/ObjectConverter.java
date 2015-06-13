@@ -28,6 +28,7 @@ import org.apache.stratos.autoscaler.stub.pojo.*;
 import org.apache.stratos.autoscaler.stub.pojo.Dependencies;
 import org.apache.stratos.autoscaler.stub.pojo.ServiceGroup;
 import org.apache.stratos.cloud.controller.stub.domain.*;
+import org.apache.stratos.common.beans.IaasProvidersInfoBean;
 import org.apache.stratos.common.beans.application.*;
 import org.apache.stratos.common.beans.application.domain.mapping.DomainMappingBean;
 import org.apache.stratos.common.beans.application.signup.ApplicationSignUpBean;
@@ -2112,12 +2113,93 @@ public class ObjectConverter {
             NetworkPartitionRef networkPartitionRef = new NetworkPartitionRef();
             networkPartitionRef.setId(networkPartitionReferenceBean.getId());
             networkPartitionRef.setPartitionAlgo(networkPartitionReferenceBean.getPartitionAlgo());
-            if(networkPartitionReferenceBean.getPartitions() != null) {
+            if (networkPartitionReferenceBean.getPartitions() != null) {
                 networkPartitionRef.setPartitionRefs(convertToASStubPartitions(
                         networkPartitionReferenceBean.getPartitions()));
             }
             networkPartitionRefList.add(networkPartitionRef);
         }
         return networkPartitionRefList.toArray(new NetworkPartitionRef[networkPartitionRefList.size()]);
+    }
+
+    public static IaasProvidersInfoBean convertCCStubIaasProvidersToIaasProvidersInfoBean(IaasProvider[] iaasProviders) {
+
+        if (iaasProviders == null) {
+            return null;
+        }
+
+        IaasProvidersInfoBean iaasProvidersInfoBean = new IaasProvidersInfoBean();
+        List<IaasProviderBean> iaasProviderBeans = new ArrayList<IaasProviderBean>();
+
+        for (int i = 0; i < iaasProviders.length; i++) {
+            IaasProviderBean iaasProviderBean = convertIaaSProviderToIaaSProviderBean(iaasProviders[i]);
+            iaasProviderBeans.add(iaasProviderBean);
+        }
+
+        iaasProvidersInfoBean.setIaasProviders(iaasProviderBeans);
+
+        return iaasProvidersInfoBean;
+//        if (portMappingBeans == null) {
+//            return null;
+//        }
+//
+//        //convert to an array
+//        PortMappingBean[] portMappingBeanArray = new PortMappingBean[portMappingBeans.size()];
+//        portMappingBeans.toArray(portMappingBeanArray);
+//        PortMapping[] portMappingArray = new PortMapping[portMappingBeanArray.length];
+//
+//        for (int i = 0; i < portMappingBeanArray.length; i++) {
+//            PortMapping portMapping = new PortMapping();
+//            portMapping.setName(portMappingBeanArray[i].getName());
+//            portMapping.setProtocol(portMappingBeanArray[i].getProtocol());
+//            portMapping.setPort(portMappingBeanArray[i].getPort());
+//            portMapping.setProxyPort(portMappingBeanArray[i].getProxyPort());
+//            portMappingArray[i] = portMapping;
+//        }
+//
+//        return portMappingArray;
+
+    }
+
+
+    /**
+     * Convert Persistence To PersistenceBean
+     *
+     * @param iaasProvider iaasProvider
+     * @return IaasProviderBean
+     */
+    private static IaasProviderBean convertIaaSProviderToIaaSProviderBean(IaasProvider iaasProvider) {
+
+        if (iaasProvider == null) {
+            return null;
+        }
+
+        IaasProviderBean iaasProviderBean = new IaasProviderBean();
+        iaasProviderBean.setType(iaasProvider.getType());
+        iaasProviderBean.setImageId(iaasProvider.getImage());
+        iaasProviderBean.setName(iaasProvider.getName());
+        iaasProviderBean.setClassName(iaasProvider.getClassName());
+        iaasProviderBean.setCredential(iaasProvider.getCredential());
+        iaasProviderBean.setIdentity(iaasProvider.getIdentity());
+        iaasProviderBean.setProvider(iaasProvider.getProvider());
+
+//      properties = iaasProvider.g
+//        if (properties != null) {
+//
+//            //set the Properties instance to IaasConfig instance
+//            iaasProviderBean.setProperty(convertCCStubPropertiesToPropertyBeanList(
+//                    iaasProvider.getgetProperties()));
+//        }
+//
+//        if (iaasConfig.getNetworkInterfaces() != null) {
+//            iaasProviderBean.setNetworkInterfaces(ObjectConverter.
+//                    convertNetworkInterfacesToNetworkInterfaceBeans(
+//                            iaasConfig.getNetworkInterfaces()));
+//        }
+
+//        iaasProviderBeans.add(iaasProviderBean);
+
+
+        return iaasProviderBean;
     }
 }

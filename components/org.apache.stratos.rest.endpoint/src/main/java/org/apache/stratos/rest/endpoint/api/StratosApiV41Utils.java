@@ -30,6 +30,8 @@ import org.apache.stratos.autoscaler.stub.pojo.ApplicationContext;
 import org.apache.stratos.autoscaler.stub.pojo.ServiceGroup;
 import org.apache.stratos.cloud.controller.stub.*;
 import org.apache.stratos.cloud.controller.stub.domain.Cartridge;
+import org.apache.stratos.cloud.controller.stub.domain.IaasProvider;
+import org.apache.stratos.common.beans.IaasProvidersInfoBean;
 import org.apache.stratos.common.beans.PropertyBean;
 import org.apache.stratos.common.beans.TenantInfoBean;
 import org.apache.stratos.common.beans.UserInfoBean;
@@ -3526,4 +3528,25 @@ public class StratosApiV41Utils {
             }
         }
     }
+
+
+    /**
+     * Get IaaS Providers
+     *
+     * @return Array of IaasProviderBeans
+     */
+    public static IaasProvidersInfoBean getIaasProviders() throws RestAPIException {
+        try {
+            CloudControllerServiceClient serviceClient = CloudControllerServiceClient.getInstance();
+            IaasProvider[] iaasProviders = serviceClient.getIaasProviders();
+            return ObjectConverter.convertCCStubIaasProvidersToIaasProvidersInfoBean(iaasProviders);
+
+        } catch (RemoteException e) {
+            String message = e.getMessage();
+            log.error(message);
+            throw new RestAPIException(message, e);
+        }
+    }
+
+
 }

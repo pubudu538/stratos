@@ -394,4 +394,11 @@ public interface CloudControllerService {
      * @param member member to be removed
      */
     void removeExpiredObsoledMemberFromCloudController(MemberContext member);
+
+    /**
+     * Get Iaas Providers
+     *
+     * @return
+     */
+    public IaasProvider[] getIaasProviders();
 }

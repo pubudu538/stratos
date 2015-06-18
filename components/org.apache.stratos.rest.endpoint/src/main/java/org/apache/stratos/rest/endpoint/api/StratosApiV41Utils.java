@@ -1581,6 +1581,7 @@ public class StratosApiV41Utils {
      * This method validates cartridges in groups
      * Deployment policy should not defined in cartridge if group has a deployment policy
      * If group does not have a DP, then cartridge should have one
+     *
      * @param cartridgeReferenceBeans - Cartridges in a group
      * @throws RestAPIException
      */
@@ -1622,6 +1623,8 @@ public class StratosApiV41Utils {
                                                   Collection<CartridgeGroupReferenceBean> groups, boolean hasDP)
             throws RestAPIException {
 
+        boolean groupHasDP = false;
+
         for (CartridgeGroupReferenceBean group : groups) {
             if (groupsSet.get(group.getAlias()) != null) {
                 String message = "Cartridge group alias exists more than once: [group-alias] " +
@@ -1635,7 +1638,7 @@ public class StratosApiV41Utils {
                             " group: [group-alias] " + group.getAlias();
                     throw new RestAPIException(message);
                 } else {
-                    hasDP = true;
+                    groupHasDP = true;
                 }
             }
 
@@ -1646,7 +1649,7 @@ public class StratosApiV41Utils {
             groupsSet.put(group.getAlias(), group);
 
             if (group.getGroups() != null) {
-                validateGroupsRecursively(groupsSet, group.getGroups(), hasDP);
+                validateGroupsRecursively(groupsSet, group.getGroups(), groupHasDP);
             }
         }
     }

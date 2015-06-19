@@ -1643,7 +1643,7 @@ public class StratosApiV41Utils {
             }
 
             if (group.getCartridges() != null) {
-                validateCartridgesForDeploymentPolicy(group.getCartridges(), hasDP);
+                validateCartridgesForDeploymentPolicy(group.getCartridges(), groupHasDP);
             }
 
             groupsSet.put(group.getAlias(), group);
